@@ -1,9 +1,18 @@
 <template>
   <section class="flex flex-col max-w-xs p-6 items-start text-left">
     <label for="startInput">Enter arithmetic expression</label>
-    <input type="text" id="startInput" class="form-input px-2 py-1" v-model.trim="expression"
-           @input="incorrectExpression = false"
-           @keyup.enter="inputKeyupHandler">
+    <div class="flex">
+      <input type="text" id="startInput" class="form-input px-2 py-1" v-model.trim="expression"
+             @input="incorrectExpression = false"
+             @keyup.enter="inputKeyupHandler">
+      <button class="ml-2 bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 focus:outline-none"
+              @click="reset"
+      >Reset
+      </button>
+    </div>
+    <div class="text-red-600 text-xs" v-if="incorrectExpression">wrong expression</div>
+    <div class="expression py-1 mt-1" v-if="resultToShow" v-html="resultToShow">
+    </div>
   </section>
 </template>
 
@@ -47,6 +56,10 @@
       },
       showInConsole(text) {
         this.resultToShow += text;
+      },
+      reset() {
+        this.resultToShow = '';
+        this.expression = '';
       },
       checkCorrectInput() {
         const reg1 = /^[- + * //()]*[0-9][- + * //()0-9]*$/;
@@ -118,7 +131,7 @@
           this.globalStack = [result];
         }
       }
-    },
+    }
   }
 </script>
 
